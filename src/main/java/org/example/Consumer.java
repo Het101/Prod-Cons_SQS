@@ -65,11 +65,17 @@ public class Consumer {
                 //? If the message is successfully sent to DestinationQueue, delete the message from SourceQueue
                 //! Otherwise return the ERROR message along with MessageID
             if(httpStatusCode == 200){
-                System.out.println("StatusCode of DeleteRequest : " + sqs.deleteMessage(S_queueUrl, messages.get(0).getReceiptHandle()).getSdkHttpMetadata().getHttpStatusCode());
+                System.out.println("StatusCode of DeleteRequest : " + sqs.deleteMessage(
+                        S_queueUrl,
+                        messages.get(0).getReceiptHandle()).getSdkHttpMetadata().getHttpStatusCode());
             }
             else {
-                System.out.printf("Error !!  StatusCode : %d  MessageId : %s",httpStatusCode,messages.get(0).getMessageId());
+                System.out.printf(
+                        "Error !!  StatusCode : %d  MessageId : %s",
+                        httpStatusCode,
+                        messages.get(0).getMessageId());
             }
         }
+        System.out.println("Order of Consumption :- " + Consumed);
     }
 }
