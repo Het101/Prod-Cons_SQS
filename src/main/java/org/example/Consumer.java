@@ -25,13 +25,30 @@ public class Consumer {
 
     void ConsumeMethod(){
         int httpStatusCode = 0;
+
         GetQueueAttributesResult QueueAttributes = sqs.getQueueAttributes(
                 new GetQueueAttributesRequest(S_queueUrl)
                         .withAttributeNames("ApproximateNumberOfMessages"));
 
         int num = Integer.parseInt(QueueAttributes.getAttributes().get("ApproximateNumberOfMessages"));
-        for (int i=0;i<num;i++) {
 
+
+        // TODO : Call SourceMethod from Source Class if SourceQueue is empty
+        if(num < 1){
+            System.out.println("Sending data to SourceQueue .......");
+            Source sc = new Source(S_queueUrl);
+            sc.SourceMethod();
+            System.out.println("SourceQueue is ready !!");
+
+            QueueAttributes = sqs.getQueueAttributes(
+                    new GetQueueAttributesRequest(S_queueUrl)
+                            .withAttributeNames("ApproximateNumberOfMessages"));
+
+            num = Integer.parseInt(QueueAttributes.getAttributes().get("ApproximateNumberOfMessages"));
+        }
+
+
+        for (int i=0;i<num;i++) {
 
             // TODO : Pulling messages from SourceQueue
             List<Message> messages = sqs.receiveMessage(S_queueUrl).getMessages();

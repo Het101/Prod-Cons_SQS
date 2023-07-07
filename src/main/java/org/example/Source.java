@@ -14,8 +14,9 @@ public class Source {
     String S_queueUrl;
 
     public Source(String sq){
-        S_queueUrl = sqs.getQueueUrl(sq).getQueueUrl();
+        S_queueUrl = sq;
     }
+
     void SourceMethod() {
         List<String> ls = new ArrayList<>();
         for(int i=1;i<11;i++){
